@@ -35,9 +35,9 @@ def get_logger() -> logging.Logger:
 def get_db() -> MySQLConnection:
     """Returns a connector to a MySQL database."""
     return connect(
-        user=os.getenv("PERSONAL_DATA_DB_USERNAME"),
-        password=os.getenv("PERSONAL_DATA_DB_PASSWORD"),
-        host=os.getenv("PERSONAL_DATA_DB_HOST"),
+        user=os.getenv("PERSONAL_DATA_DB_USERNAME", "root"),
+        password=os.getenv("PERSONAL_DATA_DB_PASSWORD", ""),
+        host=os.getenv("PERSONAL_DATA_DB_HOST", "localhost"),
         database=os.getenv("PERSONAL_DATA_DB_NAME")
     )
 
@@ -51,7 +51,7 @@ class RedactingFormatter(logging.Formatter):
     FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
     SEPARATOR = ";"
 
-    def __init__(self, fields):
+    def __init__(self, fields: List[str]) -> None:
         """Initializes the RedactingFormatter object."""
         super(RedactingFormatter, self).__init__(self.FORMAT)
         self.fields = fields

@@ -43,7 +43,7 @@ def get_db() -> MySQLConnection:
 
 
 class RedactingFormatter(logging.Formatter):
-    """ 
+    """
         Redacting Formatter class
     """
 

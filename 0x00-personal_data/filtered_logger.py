@@ -7,7 +7,6 @@ from mysql.connector.connection import MySQLConnection
 from mysql.connector import connect
 import os
 
-
 PII_FIELDS = ("name", "email", "phone", "ssn", "password")
 
 
@@ -26,7 +25,7 @@ def get_logger() -> logging.Logger:
     logger.setLevel(logging.INFO)
     logger.propagate = False
     stream = logging.StreamHandler()
-    formatter = RedactingFormatter(PII_FIELDS)
+    formatter = RedactingFormatter(list(PII_FIELDS))
     stream.setFormatter(formatter)
     logger.addHandler(stream)
     return logger
@@ -51,18 +50,20 @@ class RedactingFormatter(logging.Formatter):
     FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
     SEPARATOR = ";"
 
-    def __init__(self, fields: List[str]) -> None:
+    def __init__(self, fields: List[str]):
         """Initializes the RedactingFormatter object."""
         super(RedactingFormatter, self).__init__(self.FORMAT)
         self.fields = fields
 
     def format(self, record: logging.LogRecord) -> str:
         """Format the record."""
-        # record.msg = filter_datum(
-        #    self.fields, self.REDACTION, record.getMessage(), self.SEPARATOR)
-        # return super(RedactingFormatter, self).format(record)
+        record.msg = filter_datum(
+            self.fields, self.REDACTION, record.getMessage(), self.SEPARATOR)
+        return super(RedactingFormatter, self).format(record)
+    '''
         return filter_datum(
             self.fields, self.REDACTION, super().format(record), self.SEPARATOR)
+    '''
 
 
 def main() -> None:

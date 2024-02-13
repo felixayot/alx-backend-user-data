@@ -2,3 +2,8 @@
 __pycache__/
 *.csv
 4-main.sql
+.DS_Store
+.DS_Store?
+*.json
+*.JSON_STORE
+venv/

@@ -4,6 +4,7 @@ __pycache__/
 4-main.sql
 .DS_Store
 .DS_Store?
+*.Identifier
 *.json
 *.JSON_STORE
 venv/

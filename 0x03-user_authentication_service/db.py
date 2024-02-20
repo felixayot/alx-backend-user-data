@@ -53,10 +53,10 @@ class DB:
     def update_user(self, user_id: int, **kwargs) -> None:
         """Update the user
         """
-        if not kwargs:
-            raise ValueError
         user = self.find_user_by(id=user_id)
         for key, value in kwargs.items():
+            if not hasattr(user, key):
+                raise ValueError
             setattr(user, key, value)
         self._session.commit()
         return None

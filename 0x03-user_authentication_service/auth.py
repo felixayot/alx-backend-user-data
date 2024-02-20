@@ -6,11 +6,9 @@ from sqlalchemy.orm.exc import NoResultFound
 import uuid
 
 
-def _hash_password(password) -> bytes:
+def _hash_password(password) -> str:
     """Method to hash a password using bcrypt module."""
-    return bcrypt.hashpw(
-        password.encode('utf-8'),
-        bcrypt.gensalt())
+    return bcrypt.hashpw(password.encode(), bcrypt.gensalt())
 
 
 def _generate_uuid() -> str:
@@ -57,8 +55,9 @@ class Auth:
         """Method to get a user from a session ID."""
         if not session_id:
             return None
-        user = self._db.find_user_by(session_id=session_id)
-        if not user:
+        try:
+            user = self._db.find_user_by(session_id=session_id)
+        except NoResultFound:
             return None
         return user
 
